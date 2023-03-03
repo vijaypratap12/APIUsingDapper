@@ -13,7 +13,7 @@ namespace APIUsingDapper.DAL
         public UserProfileRepo(IConfiguration configuration)
         {
             _config = configuration;
-            _connectionString = _config.GetConnectionString("ConnString");
+            _connectionString = _config.GetConnectionString("ConString");
         }
         public async Task<UserProfile> GetUserProfile(long UserId)
         {
