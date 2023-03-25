@@ -3,6 +3,7 @@ using APIUsingDapper.DAL.Interfaces;
 using APIUsingDapper.Models;
 using APIUsingDapper.OperationFilters;
 using Microsoft.OpenApi.Models;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,7 +13,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 
-builder.Services.AddScoped<IUserProfile, UserProfileRepo>();
+builder.Services.AddScoped<IEmployee, EmployeeRepo>();
+//builder.Services.AddScoped<IUserProfile, UserProfileRepo>();
 builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc(name: "v1", new OpenApiInfo { Title = "Api", Version = "v1" });
@@ -32,6 +34,7 @@ builder.Services.AddSwaggerGen(options =>
         }
     });
     options.OperationFilter<AuthorizeOperationFilter>();
+    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name }.xml"));
 });
 
 

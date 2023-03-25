@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33414.496
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APIUsingDapper", "APIUsingDapper\APIUsingDapper.csproj", "{BCCA6B58-5997-4AB0-8C4A-CA1BB2C4AA1C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "APIUsingDapper", "APIUsingDapper\APIUsingDapper.csproj", "{BCCA6B58-5997-4AB0-8C4A-CA1BB2C4AA1C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FirstMVCProject", "FirstMVCProject\FirstMVCProject.csproj", "{9FF1850A-5C8C-403E-81E5-64F360FA29CC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mobile Shop Management", "Mobile Shop Management\Mobile Shop Management.csproj", "{58FFEA13-FF99-4E48-AF25-85901CDD0BDB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{BCCA6B58-5997-4AB0-8C4A-CA1BB2C4AA1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BCCA6B58-5997-4AB0-8C4A-CA1BB2C4AA1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BCCA6B58-5997-4AB0-8C4A-CA1BB2C4AA1C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FF1850A-5C8C-403E-81E5-64F360FA29CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FF1850A-5C8C-403E-81E5-64F360FA29CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FF1850A-5C8C-403E-81E5-64F360FA29CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FF1850A-5C8C-403E-81E5-64F360FA29CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58FFEA13-FF99-4E48-AF25-85901CDD0BDB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58FFEA13-FF99-4E48-AF25-85901CDD0BDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58FFEA13-FF99-4E48-AF25-85901CDD0BDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58FFEA13-FF99-4E48-AF25-85901CDD0BDB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -14,7 +14,7 @@ namespace APIUsingDapper.DAL
         public UserProfileRepo(IConfiguration configuration)
         {
             _config = configuration;
-            _connectionString = _config.GetConnectionString("ConString");
+            _connectionString = _config.GetConnectionString("ConString1");
         }
         public async Task<UserProfile> GetUserProfile(long UserId)
         {
@@ -24,7 +24,7 @@ namespace APIUsingDapper.DAL
                 using (var connection = new MySqlConnection(_connectionString))
                         //var connection = new SqlConnection(_connectionString))
                 {
-                    var procedure = "[GetUserProfile]";
+                    var procedure = "GetEmployeeData";
                     var values = new
                     {
                         UserId = UserId
