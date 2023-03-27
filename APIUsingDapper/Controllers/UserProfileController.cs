@@ -20,7 +20,7 @@ namespace APIUsingDapper.Controllers
             UserProfile user = new UserProfile();
             try
             {
-                user = await  _user.GetUserProfile(userId);
+                user = await _user.GetUserProfile(userId);
             }
             catch (Exception ex)
             {
