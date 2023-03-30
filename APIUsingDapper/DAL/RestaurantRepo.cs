@@ -2,7 +2,9 @@
 using APIUsingDapper.Models;
 using Dapper;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Driver.Core.Configuration;
 using MySql.Data.MySqlClient;
+using System.Collections.Generic;
 using System.Data;
 
 namespace APIUsingDapper.DAL
@@ -18,30 +20,7 @@ namespace APIUsingDapper.DAL
             _connectionString = _config.GetConnectionString("ConString");
         }
 
-        public async Task<StaffDetails> GetStaffDetails(int StaffId, string StaffName)
-        {
-            StaffDetails getStaffDetails = new StaffDetails();
-            try
-            {
-                using (var connection = new MySqlConnection(_connectionString))
-                {
-                    var procedure = "GetStaffDetails";
-                    var values = new
-                    {
-                        StaffId = StaffId,
-                        StaffName = StaffName
-
-                    };
-                    getStaffDetails = await connection.QueryFirstAsync<StaffDetails>(procedure, values, commandType: CommandType.StoredProcedure);
-                }
-                return getStaffDetails;
-            }
-
-            catch (Exception ex)
-            {
-                return null;
-            }
-        }
+        
 
         public async Task<CustomerDetails> GetCustomerDetails(int CustomerId, string CustomerName)
         {
@@ -66,30 +45,11 @@ namespace APIUsingDapper.DAL
                 return null;
             }
         }
-        public async Task<TotalPayment> GetTotalPayment(int PaymentId)
-        {
-            TotalPayment totalPayment = new TotalPayment();
-            try
-            {
-                using (var connection = new MySqlConnection(_connectionString))
-                {
-                    var procedure = "GetTotalPayment";
-                    var values = new
-                    {
-                        PaymentId = PaymentId
-                    };
-                    totalPayment = await connection.QueryFirstAsync<TotalPayment>(procedure, values, commandType: CommandType.StoredProcedure);
-                }
-                return totalPayment;
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
-        }
+
+       
         public async Task<int> AddingCustomer(AddCustomer addCustomer)
         {
-            int result;
+            int result=0;
 
             try
             {
@@ -101,43 +61,20 @@ namespace APIUsingDapper.DAL
 
                         CustomerName = addCustomer.CustomerName,
                         CustomerContact = addCustomer.CustomerContact,
-                        CustomerAddress = addCustomer.CustomerAddress,
-                        StaffId = addCustomer.StaffId,
+                        CustomerAddress = addCustomer.CustomerAddress
+                        
                     };
                     result = await connection.QueryFirstAsync<int>(procedure, values, commandType: CommandType.StoredProcedure);
                 }
                 return result;
             }
-
             catch (Exception ex)
             {
                 return 0;
-
             }
         }
    
-        public async Task<int> CheckFoodAvailability(FoodAvailability foodAvailability)
-        {
-            int result;
-            try
-            {
-                using (var connection = new MySqlConnection(_connectionString))
-                {
-                    var procedure = "FoodAvailbility";
-                    var values = new
-                    {
-                        FoodId = foodAvailability.FoodId
-                    };
-                    result = await connection.QueryFirstAsync<int>(procedure, values, commandType: CommandType.StoredProcedure);
-                }
-                return result;
-            }
-            catch (Exception ex)
-            {
-                return 0;
-            }
-        }
-
+        
         public async Task<string> DeletingCustomer(int CustomerId)
         {
             string result;
@@ -181,6 +118,121 @@ namespace APIUsingDapper.DAL
                 return null;
             }
         }
+        public async Task<IEnumerable<AllCustomerDetails>> GetAllCustomerDetails()
+        {
+           
+            IEnumerable<AllCustomerDetails> allCustomerDetails = null;
+            try
+            {
+                using (var connection = new MySqlConnection(_connectionString))
+                {
+                    var procedure = "AllCustomer";
+                   
+                    allCustomerDetails = await connection.QueryAsync<AllCustomerDetails>(procedure, null, commandType: CommandType.StoredProcedure);
+                }
+                return allCustomerDetails.ToList();
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
 
+        public async Task<IEnumerable<FoodList>> GetAllFood()
+        {
+
+            IEnumerable<FoodList> foodlist = null;
+            try
+            {
+                using (var connection = new MySqlConnection(_connectionString))
+                {
+                    var procedure = "ViewAllFood";
+
+                    foodlist = await connection.QueryAsync<FoodList>(procedure, null, commandType: CommandType.StoredProcedure);
+                }
+                return foodlist.ToList();
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public async Task<int> AddingStaff(AddStaff addStaff)
+        {         
+                int result = 0;
+
+                try
+                {
+                    using (var connection = new MySqlConnection(_connectionString))
+                    {
+                        var procedure = "AddStaff";
+                        var values = new
+                        {
+
+                            StaffName = addStaff.StaffName,
+                            StaffContact = addStaff.StaffContact,
+                            StaffCategory = addStaff.StaffCategory,
+                            StaffAddress = addStaff.StaffAddress,
+                            
+                        };
+                        result = await connection.QueryFirstAsync<int>(procedure, values, commandType: CommandType.StoredProcedure);
+                    }
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    return 0;
+                }
+            }
+
+        public async Task<IEnumerable<AllStaffList>> GetStaffLists()
+        {
+            IEnumerable<AllStaffList> stafflist = null;
+            try
+            {
+                using (var connection = new MySqlConnection(_connectionString))
+                {
+                    var procedure = "AllStaff";
+
+                    stafflist = await connection.QueryAsync<AllStaffList>(procedure, null, commandType: CommandType.StoredProcedure);
+                }
+                return stafflist.ToList();
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public async Task<IEnumerable<FeedbackList>> GetFeedbackList()
+        {
+            IEnumerable<FeedbackList> feedbackList = null;
+            try
+            {
+                using (var connection = new MySqlConnection(_connectionString))
+                {
+                    var procedure = "AllFeedback";
+
+                    feedbackList = await connection.QueryAsync<FeedbackList>(procedure, null, commandType: CommandType.StoredProcedure);
+                }
+                return feedbackList.ToList();
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+
+        }
     }
+
+
+    
+
+
+       
+  
 }
+
+
+

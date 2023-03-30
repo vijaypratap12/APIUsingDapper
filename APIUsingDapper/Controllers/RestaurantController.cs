@@ -13,29 +13,15 @@ namespace APIUsingDapper.Controllers
         {
             _restaurant = rest;
         }
+
+
         /// <summary>
         /// Get Staff details 
         /// </summary>
         /// <param name="StaffId"></param>
         ///  <param name="StaffName"></param>
         /// <returns></returns>
-        [HttpGet]
-        [Route("getStaffDetails")]
-        public async Task<IActionResult> GetStaffDetails(int StaffId, string StaffName)
-        {
-            StaffDetails getStaffDetails = new StaffDetails();
-            try
-            {
-                getStaffDetails = await _restaurant.GetStaffDetails(StaffId, StaffName);
-
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-
-            return Ok(getStaffDetails);
-        }
+       
         /// <summary>
         /// This is to get customer details
         /// </summary>
@@ -44,6 +30,7 @@ namespace APIUsingDapper.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("GetCustomerDetails")]
+
         public async Task<IActionResult> GetCustomerDetails(int CustomerId, string CustomerName)
         {
             CustomerDetails CustomerObj = new CustomerDetails();
@@ -55,30 +42,12 @@ namespace APIUsingDapper.Controllers
             {
                 return BadRequest(ex.Message);
             }
-
             return Ok(CustomerObj);
         }
 
-        /// <summary>
-        /// get total payment done by customer
-        /// </summary>
-        /// <param name="PaymentId"></param>
-        /// <returns></returns>
-        [HttpGet]
-        [Route("TotalPayment")]
-        public async Task<IActionResult> GetTotalPayment(int PaymentId)
-        {
-            TotalPayment totalPayment = new TotalPayment();
-            try
-            {
-                totalPayment = await _restaurant.GetTotalPayment(PaymentId);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            return Ok(totalPayment);
-        }
+       
+
+      
 
         /// <summary>
         /// This is used to add customer
@@ -92,40 +61,28 @@ namespace APIUsingDapper.Controllers
         [Route("AddCustomer")]
         public async Task<IActionResult> AddingCustomer(AddCustomer addCustomer)
         {
-            int result;
+            int result ;
             try
             {
                 result = await _restaurant.AddingCustomer(addCustomer);
+                if (result == 1)
+                {
+                    return Ok("values are inserted");
+                }
+                else
+                {
+                   return BadRequest("went wrong");
+                }
             }
             catch (Exception ex)
             {
+                result = 0;
                 return BadRequest(ex.Message);
             }
-
             return Ok(result);
         }
 
-        /// <summary>
-        /// This is used to check whehther that particular food is available or not by foodId
-        /// </summary>
-        /// <param name="FoodId"></param>
-        /// <returns></returns>
-        [HttpPost]
-        [Route("foodAvailability")]
-        public async Task<IActionResult> CheckFoodAvailability(FoodAvailability foodAvailability)
-        {
-            int result;
-            try
-            {
-                result = await _restaurant.CheckFoodAvailability(foodAvailability);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
 
-            return Ok(result);
-        }
         /// <summary>
         /// Delete any customer details 
         /// </summary>
@@ -134,8 +91,7 @@ namespace APIUsingDapper.Controllers
         [HttpDelete]
         [Route("DeleteCustomer")]
         public async Task<IActionResult> DeletingCustomer(int CustomerId)
-        {
-            //DeleteCustomer deleteCustomer = new DeleteCustomer();
+        {            
             string result;
             try
             {
@@ -148,11 +104,17 @@ namespace APIUsingDapper.Controllers
            return Ok(result);
         }
 
+
+        /// <summary>
+        /// Delete staff from restaurant
+        /// </summary>
+        /// <param name="StaffId"></param>
+        /// <returns></returns>
         [HttpDelete]
         [Route("DeleteStaff")]
         public async Task<IActionResult> DeletingStaff(int StaffId)
         {
-            //DeleteCustomer deleteCustomer = new DeleteCustomer();
+            
             string result;
             try
             {
@@ -166,7 +128,114 @@ namespace APIUsingDapper.Controllers
         }
 
 
+
+        /// <summary>
+        /// all customer details are here
+        /// </summary>
+        /// <param name="CustomerId"></param>
+        /// <returns></returns>
+
+        [HttpGet]
+        [Route("AllCustomerDetails")]
+        public async Task<IActionResult> GetAllCustomerDetails()
+        {
+            IEnumerable<AllCustomerDetails> allCustomerDetails = null;
+            try
+            {
+                allCustomerDetails = await _restaurant.GetAllCustomerDetails();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            return Ok(allCustomerDetails);
+        }
+
+        
+
+        [HttpGet]
+        [Route("AllFoodList")]
+        public async Task<IActionResult> GetAllFood()
+        {
+            IEnumerable<FoodList> foodlist = null;
+            try
+            {
+                foodlist = await _restaurant.GetAllFood();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            return Ok(foodlist);
+        }
+
+        [HttpPost]
+        [Route("AddStaff")]
+        public async Task<IActionResult> AddingStaff(AddStaff addStaff)
+        {
+            int result;
+            try
+            {
+                result = await _restaurant.AddingStaff(addStaff);
+                if (result == 1)
+                {
+                    return Ok("values are inserted");
+                }
+                else
+                {
+                    return BadRequest("went wrong");
+                }
+            }
+            catch (Exception ex)
+            {
+                result = 0;
+                return BadRequest(ex.Message);
+            }
+            return Ok(result);
+        }
+
+
+
+        [HttpGet]
+        [Route("AllStaffList")]
+        public async Task<IActionResult> GetStaffLists()
+        {
+            IEnumerable<AllStaffList> stafflist = null;
+            try
+            {
+                stafflist = await _restaurant.GetStaffLists();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            return Ok(stafflist);
+     
+        
+        
+        }
+
+        [HttpGet]
+        [Route("GetFeedbackList")]
+        public async Task<IActionResult> GetFeedbackList()
+        {
+            IEnumerable<FeedbackList> feedbackList = null;
+            try
+            {
+                feedbackList = await _restaurant.GetFeedbackList();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            return Ok(feedbackList);
+
+        }
     }
+
+
+
+
 }
 
 
