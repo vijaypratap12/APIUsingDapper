@@ -86,6 +86,7 @@ namespace Mobile_Shop_Management.DAL
                         CustomerEmail = addcustomer.CustomerEmail,
                         CustomerMobileNumber = addcustomer.CustomerMobileNumber,
                         Gender = addcustomer.Gender,
+                        Address=addcustomer.Address,
 
                     };
 
@@ -209,6 +210,30 @@ namespace Mobile_Shop_Management.DAL
 
         }
 
+        public async Task<IEnumerable<GetCustomerModel>> GetAllCustomers()
+        {
+            IEnumerable<GetCustomerModel> user = new List<GetCustomerModel>();
+            try
+            {
+                using (var connection = new MySqlConnection(_connectionString))
+                //var connection = new SqlConnection(_connectionString))
+                {
+                    var procedure = "GetAllCustomersDetail";
+                    var values = new
+                    {
+
+                    };
+
+                    user = await connection.QueryAsync<GetCustomerModel>(procedure, values, commandType: CommandType.StoredProcedure);
+                }
+                return user.ToList();
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
         /// <inheritdoc/>
 
 
@@ -229,6 +254,31 @@ namespace Mobile_Shop_Management.DAL
                     user = await connection.QueryFirstAsync<GetAllUserModel>(procedure, values, commandType: CommandType.StoredProcedure);
                 }
                 return user;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public async Task<IEnumerable<GetAllUserModel>> GetAllUsers()
+        {
+
+            IEnumerable<GetAllUserModel> user=new List<GetAllUserModel>();
+            try
+            {
+                using (var connection = new MySqlConnection(_connectionString))
+                //var connection = new SqlConnection(_connectionString))
+                {
+                    var procedure = "AllDetailsfEmployeesAdmin";
+                    var values = new
+                    {
+                        
+                    };
+
+                    user = await connection.QueryAsync<GetAllUserModel>(procedure, values, commandType: CommandType.StoredProcedure);
+                }
+                return user.ToList();
             }
             catch (Exception ex)
             {
@@ -284,7 +334,7 @@ namespace Mobile_Shop_Management.DAL
             }
         }
 
-        public async Task<string> UpdateUserOrAdmin(GetAllUserModel adduser)
+        public async Task<string> UpdateUsersOrAdmin(GetAllUsersModel adduser)
         {
             string result;
             try
@@ -303,9 +353,9 @@ namespace Mobile_Shop_Management.DAL
                         Email = adduser.Email,
                         UserType = adduser.UserType,
                         Passwords = adduser.Passwords,
-                        RegisterDate= adduser.RegisterDate,
+                        //RegisterDate= adduser.RegisterDate,
                         IsActive= adduser.IsActive,
-                        IsDeleted= adduser.IsDeleted,
+                        //IsDeleted= adduser.IsDeleted,
                     };
 
                     result = await connection.QueryFirstAsync<string>(procedure, values, commandType: CommandType.StoredProcedure);

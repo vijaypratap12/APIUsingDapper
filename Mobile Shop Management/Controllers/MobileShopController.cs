@@ -1,5 +1,4 @@
-﻿using APIUsingDapper.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Mobile_Shop_Management.DAL.Interface;
 using Mobile_Shop_Management.Models;
 
@@ -12,7 +11,8 @@ namespace Mobile_Shop_Management.Controllers
     {
 
         private readonly IMobileShop _user;
-        public MobileShopController(IMobileShop UserObj) {
+        public MobileShopController(IMobileShop UserObj)
+        {
 
             _user = UserObj;
 
@@ -26,14 +26,15 @@ namespace Mobile_Shop_Management.Controllers
 
 
         [HttpPost]
-        [Route("AddUserOrAdmin")]
+        [Route("AddNewProduct")]
+
         public async Task<IActionResult> AddUserOrAdmin(AddNewUserOrAdminModel userModel)
         {
             string result;
             try
             {
                 result = await _user.AddUserOrAdmin(userModel);
-                if (result==null)
+                if (result == null)
                 {
                     return BadRequest(result);
                 }
@@ -62,17 +63,17 @@ namespace Mobile_Shop_Management.Controllers
         {
             GetCustomerModel customerModel = new GetCustomerModel();
 
-                try
-                {
+            try
+            {
                 customerModel = await _user.GetCustomerDetailbyId(CustomerId);
 
-                }
-                catch (Exception ex)
-                {
-                    return BadRequest(ex.Message);
-                }
-                return Ok(customerModel);
-           
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            return Ok(customerModel);
+
         }
 
         /// <summary>
@@ -90,7 +91,7 @@ namespace Mobile_Shop_Management.Controllers
             try
             {
                 result = await _user.AddAddressOfCustomerbyId(address);
-                if (result==null)
+                if (result == null)
                 {
                     return BadRequest(result);
                 }
@@ -116,17 +117,17 @@ namespace Mobile_Shop_Management.Controllers
         {
 
             GetAllUserModel user = new GetAllUserModel();
-                try
-                {
-                    user = await _user.GetAllUser(UserId);
-                
-                 }
-                catch (Exception ex)
-                {
-                    return BadRequest(ex.Message);
-                }
-                return Ok(user);
-         }
+            try
+            {
+                user = await _user.GetAllUser(UserId);
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            return Ok(user);
+        }
 
 
         /// <summary>
@@ -195,7 +196,7 @@ namespace Mobile_Shop_Management.Controllers
 
 
         [HttpPost]
-        [Route("AddNewProduct")]
+        [Route("AddUserOrAdmin")]
         public async Task<IActionResult> AddNewProduct(AddProductModel product)
         {
             string result;
@@ -281,12 +282,12 @@ namespace Mobile_Shop_Management.Controllers
         /// <returns></returns>
         [HttpPut]
         [Route("UpdateUserOrAdmin")]
-        public async Task<IActionResult> UpdateUserOrAdmin(GetAllUserModel adduser)
+        public async Task<IActionResult> UpdateUsersOrAdmin(GetAllUsersModel adduser)
         {
             string result;
             try
             {
-                result = await _user.UpdateUserOrAdmin(adduser);
+                result = await _user.UpdateUsersOrAdmin(adduser);
                 if (result == null)
                 {
                     return BadRequest(result);
@@ -331,6 +332,53 @@ namespace Mobile_Shop_Management.Controllers
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+
+        /// <summary>
+        /// Get all Employee Details 
+        /// </summary>
+        /// <param name="*"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("GetAllUsers")]
+        public async Task<IActionResult> GetAllUsers()
+        {
+
+            IEnumerable<GetAllUserModel> user = null;
+            try
+            {
+                user = await _user.GetAllUsers();
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            return Ok(user);
+        }
+
+        /// <summary>
+        /// Get all Customers Details 
+        /// </summary>
+        /// <param name="*"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("GetAllCustomers")]
+        public async Task<IActionResult> GetAllCustomers()
+        {
+
+            IEnumerable<GetCustomerModel> user = null;
+            try
+            {
+                user = await _user.GetAllCustomers();
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            return Ok(user);
         }
 
     }

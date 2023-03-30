@@ -3,7 +3,6 @@ using APIUsingDapper.Models;
 using Dapper;
 using MySqlConnector;
 using System.Data;
-using System.Data.SqlClient;
 
 namespace APIUsingDapper.DAL
 {
@@ -22,7 +21,7 @@ namespace APIUsingDapper.DAL
             try
             {
                 using (var connection = new MySqlConnection(_connectionString))
-                        //var connection = new SqlConnection(_connectionString))
+                //var connection = new SqlConnection(_connectionString))
                 {
                     var procedure = "GetEmployeeData";
                     var values = new

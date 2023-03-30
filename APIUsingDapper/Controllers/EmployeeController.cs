@@ -1,7 +1,6 @@
 ﻿using APIUsingDapper.DAL.Interfaces;
 using APIUsingDapper.Models;
 using Microsoft.AspNetCore.Mvc;
-using MySqlX.XDevAPI.Relational;
 
 namespace APIUsingDapper.Controllers
 {
@@ -9,11 +8,11 @@ namespace APIUsingDapper.Controllers
     [ApiController]
     public class EmployeeController : ControllerBase
     {
-            private readonly IEmployee _user;
-            public EmployeeController(IEmployee user)
-            {
-                _user = user;
-            }
+        private readonly IEmployee _user;
+        public EmployeeController(IEmployee user)
+        {
+            _user = user;
+        }
 
         /// <summary>
         /// Get Employee Details By UserId
@@ -22,19 +21,19 @@ namespace APIUsingDapper.Controllers
         /// <returns></returns>
         [HttpGet]
 
-            public async Task<IActionResult> GetEmployee(long userId)
+        public async Task<IActionResult> GetEmployee(long userId)
+        {
+            EmployeeModel user = new EmployeeModel();
+            try
             {
-                EmployeeModel user = new EmployeeModel();
-                try
-                {
-                    user = await _user.GetEmployee(userId);
-                }
-                catch (Exception ex)
-                {
-                    return BadRequest(ex.Message);
-                }
-                return Ok(user);
+                user = await _user.GetEmployee(userId);
             }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            return Ok(user);
+        }
 
         /// <summary>
         /// add Employee details for new user
@@ -44,7 +43,7 @@ namespace APIUsingDapper.Controllers
         [HttpPost]
         public async Task<IActionResult> AddEmployee(EmployeeModeladd employeeModel1)
         {
-            int result=0;
+            int result = 0;
             try
             {
                 result = await _user.AddEmployee(employeeModel1);
@@ -60,8 +59,8 @@ namespace APIUsingDapper.Controllers
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
-            }  
+            }
         }
     }
-    }
+}
 

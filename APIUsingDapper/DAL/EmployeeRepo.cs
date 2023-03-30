@@ -16,8 +16,8 @@ namespace APIUsingDapper.DAL
             _connectionString = _config.GetConnectionString("ConString");
         }
 
-        
-        
+
+
         public async Task<EmployeeModel> GetEmployee(long UserId)
         {
             EmployeeModel profile = new EmployeeModel();
@@ -42,7 +42,7 @@ namespace APIUsingDapper.DAL
             }
         }
 
-        
+
         public async Task<int> AddEmployee(EmployeeModeladd e)
         {
             //EmployeeModel employee1 = new EmployeeModel();
@@ -55,10 +55,10 @@ namespace APIUsingDapper.DAL
                     var procedure = "AddEmployee";
                     var values = new
                     {
-                        FirstName= e.FirstName,
-                        LastName= e.LastName,
-                        UserName= e.UserName,
-                        Email= e.Email,
+                        FirstName = e.FirstName,
+                        LastName = e.LastName,
+                        UserName = e.UserName,
+                        Email = e.Email,
                     };
 
                     result = await connection.QueryFirstAsync<int>(procedure, values, commandType: CommandType.StoredProcedure);

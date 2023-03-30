@@ -18,7 +18,7 @@
         public string? LastName { get; set; }
         public string? UserName { get; set; }
         public string? Email { get; set; }
-       // public DateTime? UpdatedDate { get; set; }
+        // public DateTime? UpdatedDate { get; set; }
         //public int? IsActive { get; set; }
         //public int? IsDelete { get; set; }
     }

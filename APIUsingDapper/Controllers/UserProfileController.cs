@@ -1,6 +1,5 @@
 ﻿using APIUsingDapper.DAL.Interfaces;
 using APIUsingDapper.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace APIUsingDapper.Controllers
@@ -20,7 +19,7 @@ namespace APIUsingDapper.Controllers
             UserProfile user = new UserProfile();
             try
             {
-                user = await  _user.GetUserProfile(userId);
+                user = await _user.GetUserProfile(userId);
             }
             catch (Exception ex)
             {

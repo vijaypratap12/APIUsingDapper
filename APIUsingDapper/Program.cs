@@ -1,6 +1,5 @@
 using APIUsingDapper.DAL;
 using APIUsingDapper.DAL.Interfaces;
-using APIUsingDapper.Models;
 using APIUsingDapper.OperationFilters;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
@@ -34,7 +33,7 @@ builder.Services.AddSwaggerGen(options =>
         }
     });
     options.OperationFilter<AuthorizeOperationFilter>();
-    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name }.xml"));
+    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"));
 });
 
 
