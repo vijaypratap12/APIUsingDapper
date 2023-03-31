@@ -1,4 +1,6 @@
-﻿namespace APIUsingDapper.Models
+﻿using APIUsingDapper.Models;
+
+namespace APIUsingDapper.Models
 {
     public class UserProfile
     {
@@ -12,3 +14,4 @@
         public string? IsDelete { get; set; }
     }
 }
+
