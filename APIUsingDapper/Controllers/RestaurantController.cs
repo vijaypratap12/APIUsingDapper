@@ -229,7 +229,31 @@ namespace APIUsingDapper.Controllers
                 return BadRequest(ex.Message);
             }
             return Ok(feedbackList);
+        }
 
+        [HttpPost]
+        [Route("AddingFeedback")]
+        public async Task <IActionResult> AddingFeedback( AddFeedback addFeedback)
+        {
+            int result;
+            try
+            {
+                result = await _restaurant.AddingFeedback(addFeedback);
+                if (result == 1)
+                {
+                    return Ok("values are inserted");
+                }
+                else
+                {
+                    return BadRequest("went wrong");
+                }
+            }
+            catch (Exception ex)
+            {
+                result = 0;
+                return BadRequest(ex.Message);
+            }
+            return Ok(result);
         }
     }
 

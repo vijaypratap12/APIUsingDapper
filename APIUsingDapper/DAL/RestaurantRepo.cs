@@ -224,6 +224,30 @@ namespace APIUsingDapper.DAL
             }
 
         }
+
+        public async Task<int> AddingFeedback(AddFeedback addFeedback)
+        {
+            int result = 0;
+            try
+            {
+                using(var connection = new MySqlConnection(_connectionString)) 
+                {
+                    var procedure = "AddFeedback";
+                    var values = new
+                    {
+                        CustomerId = addFeedback.CustomerId,
+                        FoodName = addFeedback.FoodName,
+                        Messages = addFeedback.Messages,
+                    };
+                    result = await connection.QueryFirstAsync<int>(procedure, values, commandType: CommandType.StoredProcedure);
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return 0;
+            }
+        }
     }
 
 

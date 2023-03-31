@@ -16,6 +16,8 @@ namespace APIUsingDapper.DAL.Interfaces
         public Task<int> AddingStaff(AddStaff addStaff);
         public Task<IEnumerable<AllStaffList>> GetStaffLists();
         public Task<IEnumerable<FeedbackList>> GetFeedbackList();
+        public Task<int> AddingFeedback (AddFeedback addFeedback);
+            
        
     }
 }
