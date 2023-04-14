@@ -39,7 +39,7 @@
         public string? Passwords { get; set; }
         //public DateTime? RegisterDate { get; set; }
         public int IsActive { get; set; }
-       // public int IsDeleted { get; set; }
+        // public int IsDeleted { get; set; }
 
     }
     public class CustomerModel
@@ -115,5 +115,24 @@
         public int ProductQuantity { get; set; }
     }
 
+    public class AddToCart
+    {
+        public int ProductId { get; set; }
+        public int CustomerId { get; set; }
+        public int Quantity { get; set; }
+        public string? ProductSize { get; set; }
 
+    }
+    public class LoginUser
+    {
+        public int UserId { get; set; }
+        public string? Passwords { get; set; }
+        public string Email { get; set; }
+    }
+    public class TokenModel
+    {
+        public string token { get; set; }
+        public int UserId { get; set; }
+        public DateTime expiry { get; set; }
+    }
 }

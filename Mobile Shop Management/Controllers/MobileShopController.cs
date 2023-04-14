@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Mobile_Shop_Management.DAL.Interface;
 using Mobile_Shop_Management.Models;
 
@@ -19,6 +20,38 @@ namespace Mobile_Shop_Management.Controllers
         }
 
         /// <summary>
+        ///Login User
+        /// </summary>
+        /// <param name="loginUser"></param>
+        /// <returns></returns>
+
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("LoginUserOrAdmin")]
+
+        public async Task<IActionResult> LoginUserOrAdmin(LoginUser loginUser)
+        {
+            TokenModel tokenModel = new TokenModel();   
+            try
+            {
+                tokenModel = await _user.LoginUserOrAdmin(loginUser);
+                if (tokenModel == null)
+                {
+                    return BadRequest();
+                }
+                else
+                {
+                    return Ok(tokenModel);
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        /// <summary>
         /// add New User Or Admin with details 
         /// </summary>
         /// <param name="userModel"></param>
@@ -27,7 +60,7 @@ namespace Mobile_Shop_Management.Controllers
 
         [HttpPost]
         [Route("AddNewProduct")]
-
+        [Authorize]
         public async Task<IActionResult> AddUserOrAdmin(AddNewUserOrAdminModel userModel)
         {
             string result;
@@ -49,7 +82,35 @@ namespace Mobile_Shop_Management.Controllers
             }
         }
 
+        /// <summary>
+        /// add to cart with details 
+        /// </summary>
+        /// <param name="addToCart"></param>
+        /// <returns></returns>
 
+        [HttpPost]
+        [Route("AddToCart")]
+        [Authorize]
+        public async Task<IActionResult> AddToCart(AddToCart addToCart)
+        {
+            string result;
+            try
+            {
+                result = await _user.AddToCart(addToCart);
+                if (result == null)
+                {
+                    return BadRequest(result);
+                }
+                else
+                {
+                    return Ok(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
 
         /// <summary>
@@ -59,6 +120,7 @@ namespace Mobile_Shop_Management.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("GetCustomerDetailbyId")]
+        [Authorize]
         public async Task<IActionResult> GetCustomerDetailbyId(int CustomerId)
         {
             GetCustomerModel customerModel = new GetCustomerModel();
@@ -85,6 +147,7 @@ namespace Mobile_Shop_Management.Controllers
 
         [HttpPost]
         [Route("AddAddressOfCustomerbyId")]
+        [Authorize]
         public async Task<IActionResult> AddAddressOfCustomerbyId(AddressModel address)
         {
             string result;
@@ -113,6 +176,7 @@ namespace Mobile_Shop_Management.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("GetAllUser")]
+        [Authorize]
         public async Task<IActionResult> GetAllUser(int UserId)
         {
 
@@ -139,6 +203,7 @@ namespace Mobile_Shop_Management.Controllers
 
         [HttpPost]
         [Route("AddSicePricebypId")]
+        [Authorize]
         public async Task<IActionResult> AddSicePricebypId(AddSizePricebypid sizeprice)
         {
             string result;
@@ -170,12 +235,38 @@ namespace Mobile_Shop_Management.Controllers
         /// 
         [HttpDelete]
         [Route("DeleteUserById")]
+        [Authorize]
         public async Task<IActionResult> DeleteUserById(int UserId)
         {
             string result;
             try
             {
                 result = await _user.DeleteUserById(UserId);
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// This end point for delete Customer by thier Id
+        /// </summary>
+        /// <param name="CustomerId"></param>
+        /// <returns></returns>
+        /// 
+        [HttpDelete]
+        [Route("DeleteCustomerById")]
+        [Authorize]
+        public async Task<IActionResult> DeleteCustomerById(int CustomerId)
+        {
+            int result;
+            try
+            {
+                result = await _user.DeleteCustomerById(CustomerId);
 
             }
             catch (Exception ex)
@@ -197,6 +288,7 @@ namespace Mobile_Shop_Management.Controllers
 
         [HttpPost]
         [Route("AddUserOrAdmin")]
+        [Authorize]
         public async Task<IActionResult> AddNewProduct(AddProductModel product)
         {
             string result;
@@ -227,6 +319,7 @@ namespace Mobile_Shop_Management.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("GetProductDetailbyId")]
+        [Authorize]
         public async Task<IActionResult> GetProductDetailbyId(int ProductId)
         {
 
@@ -253,6 +346,7 @@ namespace Mobile_Shop_Management.Controllers
 
         [HttpPost]
         [Route("AddColoQuantitybypId")]
+        [Authorize]
         public async Task<IActionResult> AddColoQuantitybypId(AddColorQuantitybypId colorsize)
         {
             string result;
@@ -282,6 +376,7 @@ namespace Mobile_Shop_Management.Controllers
         /// <returns></returns>
         [HttpPut]
         [Route("UpdateUserOrAdmin")]
+        [Authorize]
         public async Task<IActionResult> UpdateUsersOrAdmin(GetAllUsersModel adduser)
         {
             string result;
@@ -312,6 +407,7 @@ namespace Mobile_Shop_Management.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("AddNewCustomer")]
+        [Authorize]
         public async Task<IActionResult> AddNewCustomer(CustomerModel addcustomer)
         {
 
@@ -342,6 +438,7 @@ namespace Mobile_Shop_Management.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("GetAllUsers")]
+        [Authorize]
         public async Task<IActionResult> GetAllUsers()
         {
 
@@ -365,6 +462,7 @@ namespace Mobile_Shop_Management.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("GetAllCustomers")]
+        [Authorize]
         public async Task<IActionResult> GetAllCustomers()
         {
 

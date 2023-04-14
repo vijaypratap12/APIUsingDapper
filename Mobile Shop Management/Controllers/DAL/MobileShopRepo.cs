@@ -1,10 +1,17 @@
 ﻿using APIUsingDapper.Models;
 using Dapper;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.VisualBasic;
 using Mobile_Shop_Management.DAL.Interface;
 using Mobile_Shop_Management.Models;
 using MySql.Data.MySqlClient;
 using System.Data;
+using System.IdentityModel.Tokens.Jwt;
+using System.Reactive.Subjects;
 using System.Reflection;
+using System.Security.Claims;
+using System.Text;
 
 namespace Mobile_Shop_Management.DAL
 {
@@ -14,9 +21,10 @@ namespace Mobile_Shop_Management.DAL
         private readonly IConfiguration _config;
         public MobileShopRepo(IConfiguration configuration) { 
             _config = configuration;
+
             _connectionString = _config.GetConnectionString("ConString");
         }
-
+       
         public async Task<string> AddAddressOfCustomerbyId(AddressModel address)
         {
             string result;
@@ -154,6 +162,34 @@ namespace Mobile_Shop_Management.DAL
             }
         }
 
+        public async Task<string> AddToCart(AddToCart addToCart)
+        {
+            string result;
+            try
+            {
+                using (var connection = new MySqlConnection(_connectionString))
+                //var connection = new SqlConnection(_connectionString))
+                {
+                    var procedure = "AddToCard";
+                    var values = new
+                    {
+                        ProductId=addToCart.ProductId,
+                        CustomerId=addToCart.CustomerId,
+                        Quantity=addToCart.Quantity,
+                        ProductSize=addToCart.ProductSize,
+                        
+                    };
+
+                    result = await connection.QueryFirstAsync<string>(procedure, values, commandType: CommandType.StoredProcedure);
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
         public async Task<string> AddUserOrAdmin(AddNewUserOrAdminModel adduser)
         {
 
@@ -182,6 +218,30 @@ namespace Mobile_Shop_Management.DAL
             catch (Exception ex)
             {
                 return null;
+            }
+        }
+
+        public async Task<int> DeleteCustomerById(int CustomerId)
+        {
+           int result;
+            try
+            {
+                using (var connection = new MySqlConnection(_connectionString))
+                //var connection = new SqlConnection(_connectionString))
+                {
+                    var procedure = "RemoveCustomerById";
+                    var values = new
+                    {
+                        CustomerId = CustomerId
+                    };
+
+                  result = await connection.QueryFirstAsync<int>(procedure, values, commandType: CommandType.StoredProcedure);
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return 0;
             }
         }
 
@@ -327,6 +387,57 @@ namespace Mobile_Shop_Management.DAL
                     customerModel = await connection.QueryFirstAsync<GetProductDetailModel>(procedure, values, commandType: CommandType.StoredProcedure);
                 }
                 return customerModel;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        
+
+        public async Task<TokenModel> LoginUserOrAdmin(LoginUser loginUser)
+        {
+            TokenModel tokenModel = new TokenModel();
+            string result;
+            try
+            {
+                using (var connection = new MySqlConnection(_connectionString))
+                //var connection = new SqlConnection(_connectionString))
+                {
+                    var procedure = "UsderOrAdminLogin";
+                    var values = new
+                    {
+                        UserId = loginUser.UserId,
+                        Passwords = loginUser.Passwords,
+                    };
+
+                    result = await connection.QueryFirstAsync<string>(procedure, values, commandType: CommandType.StoredProcedure);
+                }
+                if (result != null)
+                {
+                    var tokenHandler = new JwtSecurityTokenHandler();
+                    var securitykey = Encoding.ASCII.GetBytes("sachinkumarthisismysewcretkeyiamusing");
+                    var tokenDescriptor = new SecurityTokenDescriptor
+                    {
+                        Subject = new ClaimsIdentity(new Claim[]
+                          {
+                             new Claim(ClaimTypes.PrimarySid, loginUser.UserId.ToString()),
+                             new Claim(ClaimTypes.Email, loginUser.Email),
+                             new Claim(ClaimTypes.UserData, loginUser.Passwords)
+                          }),
+                        Expires = DateTime.UtcNow.AddMinutes(10),
+                        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(securitykey), 
+                        SecurityAlgorithms.HmacSha256Signature)
+                    };
+                    var token = tokenHandler.CreateToken(tokenDescriptor);
+                    tokenModel.token = tokenHandler.WriteToken(token);
+                    tokenModel.UserId=loginUser.UserId;
+                    tokenModel.expiry = DateTime.Now.AddMinutes(10);
+                    return tokenModel;
+                }
+                else
+                    return null; 
             }
             catch (Exception ex)
             {
